@@ -1,15 +1,5 @@
-/**
- * Registers slash commands with Discord.
- *
- * Usage:
- *   pnpm register
- *
- * Environment variables required:
- *   DISCORD_APPLICATION_ID
- *   DISCORD_BOT_TOKEN
- */
-
 import "dotenv/config";
+import { mkBeastiary } from "./utils";
 
 const APP_ID = process.env.DISCORD_APPLICATION_ID!;
 const BOT_TOKEN = process.env.DISCORD_BOT_TOKEN!;
@@ -44,9 +34,22 @@ const enotheia = {
   ],
 };
 
+const beastiarySmall = mkBeastiary(
+  "beastiary-small",
+  "Render a small Bestiary entry (overview only)",
+);
+const beastiaryMedium = mkBeastiary(
+  "beastiary-medium",
+  "Render a medium Bestiary entry (compact attacks)",
+);
+const beastiaryFull = mkBeastiary(
+  "beastiary-full",
+  "Render a full Bestiary entry (all sections)",
+);
+
 /* -------------------------------------------------- */
 
-const commands = [enotheia];
+const commands = [enotheia, beastiarySmall, beastiaryMedium, beastiaryFull];
 
 const url = GUILD_ID
   ? `https://discord.com/api/v10/applications/${APP_ID}/guilds/${GUILD_ID}/commands`
