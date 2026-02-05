@@ -11,7 +11,11 @@ const unauthorized = () =>
   new Response("Bad request signature", { status: 401 });
 
 export default {
-  async fetch(req: Request, env: Env): Promise<Response> {
+  async fetch(
+    req: Request,
+    env: Env,
+    execCtx: ExecutionContext,
+  ): Promise<Response> {
     const url = new URL(req.url);
 
     if (url.pathname !== "/") return notFound();
@@ -23,16 +27,23 @@ export default {
     const interaction = JSON.parse(verified.body) as Interaction;
 
     if (interaction.type === 1) return Response.json(pong());
-    if (interaction.type !== 2) {
+
+    if (interaction.type !== 2 && interaction.type !== 5) {
       return Response.json(message("Unsupported interaction.", true));
     }
 
-    const cmd = route(registry(), interaction);
-    if (!cmd) return Response.json(message("Unknown command.", true));
+    const r = route(registry(), interaction);
+    if (!r) return Response.json(message("Unknown command.", true));
 
     try {
-      return Response.json(await cmd.handle(interaction, { log: console }));
-    } catch {
+      const res = await r.handle(interaction, {
+        log: console,
+        env,
+        waitUntil: execCtx.waitUntil.bind(execCtx),
+      });
+      return Response.json(res);
+    } catch (err) {
+      console.error(err);
       return Response.json(message("Something went wrong.", true));
     }
   },

@@ -1,5 +1,4 @@
 import "dotenv/config";
-import { mkBeastiary } from "./utils";
 
 const APP_ID = process.env.DISCORD_APPLICATION_ID!;
 const BOT_TOKEN = process.env.DISCORD_BOT_TOKEN!;
@@ -34,18 +33,21 @@ const enotheia = {
   ],
 };
 
-const beastiarySmall = mkBeastiary(
-  "beastiary-small",
-  "Render a small Bestiary entry (overview only)",
-);
-const beastiaryMedium = mkBeastiary(
-  "beastiary-medium",
-  "Render a medium Bestiary entry (compact attacks)",
-);
-const beastiaryFull = mkBeastiary(
-  "beastiary-full",
-  "Render a full Bestiary entry (all sections)",
-);
+const beastiarySmall = {
+  name: "beastiary-small",
+  description:
+    "Open a modal to enter a small Bestiary entry (basic block only)",
+};
+
+const beastiaryMedium = {
+  name: "beastiary-medium",
+  description: "Open a modal to enter a medium Bestiary entry (basic + traits)",
+};
+
+const beastiaryFull = {
+  name: "beastiary-full",
+  description: "Open a modal to enter a full Bestiary entry",
+};
 
 /* -------------------------------------------------- */
 
