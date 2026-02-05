@@ -8,12 +8,9 @@ importers:
 
   .:
     dependencies:
-      discord-interactions:
-        specifier: ^4.4.0
-        version: 4.4.0
-      pino:
-        specifier: ^10.3.0
-        version: 10.3.0
+      dotenv:
+        specifier: ^17.2.3
+        version: 17.2.3
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20260205.0
@@ -21,6 +18,9 @@ importers:
       '@types/node':
         specifier: ^25.2.0
         version: 25.2.0
+      '@types/pino':
+        specifier: ^7.0.5
+        version: 7.0.5
       tsx:
         specifier: ^4.21.0
         version: 4.21.0
@@ -567,6 +567,10 @@ packages:
   '@types/node@25.2.0':
     resolution: {integrity: sha512-DZ8VwRFUNzuqJ5khrvwMXHmvPe+zGayJhr2CDNiKB1WBE1ST8Djl00D0IC4vvNmHMdj6DlbYRIaFE7WHjlDl5w==}
 
+  '@types/pino@7.0.5':
+    resolution: {integrity: sha512-wKoab31pknvILkxAF8ss+v9iNyhw5Iu/0jLtRkUD74cNfOOLJNnqfFKAv0r7wVaTQxRZtWrMpGfShwwBjOcgcg==}
+    deprecated: This is a stub types definition. pino provides its own type definitions, so you do not need this installed.
+
   atomic-sleep@1.0.0:
     resolution: {integrity: sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ==}
     engines: {node: '>=8.0.0'}
@@ -582,9 +586,9 @@ packages:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
     engines: {node: '>=8'}
 
-  discord-interactions@4.4.0:
-    resolution: {integrity: sha512-jjJx8iwAeJcj8oEauV43fue9lNqkf38fy60aSs2+G8D1nJmDxUIrk08o3h0F3wgwuBWWJUZO+X/VgfXsxpCiJA==}
-    engines: {node: '>=18.4.0'}
+  dotenv@17.2.3:
+    resolution: {integrity: sha512-JVUnt+DUIzu87TABbhPmNfVdBDt18BLOWjMUFJMSi/Qqg7NTYtabbvSNJGOJ7afbRuv9D/lngizHtP7QyLQ+9w==}
+    engines: {node: '>=12'}
 
   error-stack-parser-es@1.0.5:
     resolution: {integrity: sha512-5qucVt2XcuGMcEGgWI7i+yZpmpByQ8J1lHhcL7PwqCwu9FPP3VUXzT4ltHe5i2z9dePwEHcDVOAfSnHsOlCXRA==}
@@ -1052,6 +1056,10 @@ snapshots:
     dependencies:
       undici-types: 7.16.0
 
+  '@types/pino@7.0.5':
+    dependencies:
+      pino: 10.3.0
+
   atomic-sleep@1.0.0: {}
 
   blake3-wasm@2.1.5: {}
@@ -1060,7 +1068,7 @@ snapshots:
 
   detect-libc@2.1.2: {}
 
-  discord-interactions@4.4.0: {}
+  dotenv@17.2.3: {}
 
   error-stack-parser-es@1.0.5: {}
 

@@ -1,27 +1,29 @@
 {
-  "name": "Thorrim",
+  "name": "Eldrun",
   "version": "1.0.0",
   "description": "Lorekeeper of Enotheia",
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "register": "tsx scripts/register.ts",
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
-    "register": "tsx scripts/register.ts"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "pnpm typecheck",
+    "deploy": "wrangler deploy"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.28.0",
-  "dependencies": {
-    "discord-interactions": "^4.4.0",
-    "pino": "^10.3.0"
-  },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260205.0",
     "@types/node": "^25.2.0",
+    "@types/pino": "^7.0.5",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "wrangler": "^4.63.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3"
   }
 }
