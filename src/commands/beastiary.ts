@@ -1,8 +1,9 @@
 import type { Cmd, Ctx } from "../registry";
 import { message } from "../discord/response";
 import type { Interaction } from "../discord/types";
-import { parseBlocks, selectBlocks, type Mode } from "./beastiary/parse";
-import { blocksToEmbeds } from "./beastiary/render";
+import { chunkBestiary } from "./beastiary/chunk";
+import { selectChunks, type Mode } from "./beastiary/select";
+import { chunksToEmbeds } from "./beastiary/render";
 
 const getStringOption = (i: Interaction, name: string): string | null => {
   const opts = i.data?.options ?? [];
@@ -10,18 +11,12 @@ const getStringOption = (i: Interaction, name: string): string | null => {
   return typeof found?.value === "string" ? found.value : null;
 };
 
-const toDiscordEmbedsPayload = (embeds: any[]) => ({
-  type: 4, // CHANNEL_MESSAGE_WITH_SOURCE
+const embedsPayload = (embeds: any[]) => ({
+  type: 4,
   data: { embeds },
 });
 
-const chunk = <T>(arr: T[], size: number) => {
-  const out: T[][] = [];
-  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
-  return out;
-};
-
-const buildBeastiaryHandler = (mode: Mode): Cmd["handle"] => {
+const buildHandler = (mode: Mode): Cmd["handle"] => {
   return async (i: Interaction, ctx: Ctx) => {
     const title = (getStringOption(i, "title") ?? "").trim();
     const text = (getStringOption(i, "text") ?? "").trim();
@@ -29,38 +24,35 @@ const buildBeastiaryHandler = (mode: Mode): Cmd["handle"] => {
     if (!title) return message("Missing required option: title", true);
     if (!text) return message("Missing required option: text", true);
 
-    const blocks = parseBlocks(text);
-    const selected = selectBlocks(blocks, mode);
-    const embeds = blocksToEmbeds(title, selected);
+    const chunks = chunkBestiary(text);
+    const selected = selectChunks(chunks, mode);
+    const embeds = chunksToEmbeds(title, selected);
 
     ctx.log.info(
-      { cmd: i.data?.name, mode, embeds: embeds.length },
-      "beastiary render",
+      { cmd: i.data?.name, mode, chunks: chunks.length, embeds: embeds.length },
+      "beastiary",
     );
 
-    // Discord allows max 10 embeds per response.
-    // For now we enforce <= 10 and ask to shorten if too big.
     if (embeds.length > 10) {
       return message(
-        `Result would create ${embeds.length} embeds, but Discord allows max 10 per message. ` +
-          `Please shorten the entry or use a smaller mode.`,
+        `Result would create ${embeds.length} embeds, but Discord allows max 10 per message. Please shorten the entry.`,
         true,
       );
     }
 
-    return toDiscordEmbedsPayload(embeds);
+    return embedsPayload(embeds);
   };
 };
 
 export const beastiarySmall: Cmd = {
   name: "beastiary-small",
-  handle: buildBeastiaryHandler("small"),
+  handle: buildHandler("small"),
 };
 export const beastiaryMedium: Cmd = {
   name: "beastiary-medium",
-  handle: buildBeastiaryHandler("medium"),
+  handle: buildHandler("medium"),
 };
 export const beastiaryFull: Cmd = {
   name: "beastiary-full",
-  handle: buildBeastiaryHandler("full"),
+  handle: buildHandler("full"),
 };
