@@ -10,7 +10,7 @@ pkgs.mkShell {
   name = "Eldrun";
   buildInputs = with pkgs; [
     gnumake
-    nodejs
+    nodejs_22
     pnpm
     wrangler
   ];
