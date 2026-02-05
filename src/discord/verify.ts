@@ -20,12 +20,10 @@ export const verifyDiscordRequest = async (
 
   const body = await req.clone().text();
 
-  // Discord signs: timestamp + raw body
   const message = textToU8(timestamp + body);
   const signature = hexToU8(signatureHex);
   const publicKey = hexToU8(publicKeyHex);
 
-  // Import Ed25519 public key and verify
   const key = await crypto.subtle.importKey(
     "raw",
     publicKey,

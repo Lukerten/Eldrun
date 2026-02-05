@@ -10,7 +10,6 @@ const emit = (level: "info" | "warn" | "error", obj: unknown, msg?: string) => {
       ? { level, ...asObject(obj) }
       : { level, msg, ...asObject(obj) };
 
-  // Cloudflare captures console output; keep it structured
   const line = JSON.stringify(payload);
 
   if (level === "info") console.log(line);

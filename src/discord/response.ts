@@ -6,7 +6,7 @@ export const message = (
   content: string,
   ephemeral = false,
 ): InteractionResponse => ({
-  type: 4, // CHANNEL_MESSAGE_WITH_SOURCE
+  type: 4,
   data: {
     content,
     flags: ephemeral ? 1 << 6 : undefined,
