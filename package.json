@@ -1,0 +1,27 @@
+{
+  "name": "Thorrim",
+  "version": "1.0.0",
+  "description": "Lorekeeper of Enotheia",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "register": "tsx scripts/register.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.28.0",
+  "dependencies": {
+    "discord-interactions": "^4.4.0",
+    "pino": "^10.3.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260205.0",
+    "@types/node": "^25.2.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.63.0"
+  }
+}
