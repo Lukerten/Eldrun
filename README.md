@@ -1,7 +1,6 @@
+# Eldrun Eisenfeder
 
-# Thorrim Bot (Cloudflare Workers • Discord Interactions)
-
-Thorrim is a **serverless** Discord bot that responds to **slash commands** (no Gateway / no websocket connection).
+Eldrun is a **serverless** Discord bot that helps render Markdown.
 Discord sends interaction webhooks to your Worker, and the Worker replies with messages/embeds.
 
 ---
