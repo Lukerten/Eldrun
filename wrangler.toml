@@ -1,0 +1,7 @@
+name = "erdrun-worker"
+main = "src/worker.ts"
+compatibility_date = "2025-12-15"
+
+[vars]
+DISCORD_PUBLIC_KEY = "05643d930d77d36177a3a206b0cb0ed57e36e5617e3e1ae61dd5991cf4e8c423"
+DISCORD_APPLICATION_ID = "1468991583952044035"
