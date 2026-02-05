@@ -2,5 +2,3 @@ node_modules
 .wrangler
 .direnv
 .env
-
-wrangler.toml

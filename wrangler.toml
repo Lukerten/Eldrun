@@ -3,5 +3,3 @@ main = "src/worker.ts"
 compatibility_date = "2025-12-15"
 
 [vars]
-DISCORD_PUBLIC_KEY =
-DISCORD_APPLICATION_ID =
