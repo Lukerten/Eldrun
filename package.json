@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "register": "tsx scripts/register.ts",
     "dev": "wrangler dev",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "build": "pnpm typecheck",
@@ -21,5 +22,8 @@
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "wrangler": "^4.63.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3"
   }
 }
