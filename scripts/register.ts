@@ -4,13 +4,10 @@ const APP_ID = process.env.DISCORD_APPLICATION_ID!;
 const BOT_TOKEN = process.env.DISCORD_BOT_TOKEN!;
 const GUILD_ID = process.env.GUILD_ID;
 
-const thorrim = {
-  name: "thorrim",
-  description: "Thorrim utilities",
-  options: [
-    { type: 1, name: "beast", description: "Beast tools" },
-    { type: 1, name: "lexika", description: "Lexika tools" },
-  ],
+const eldrun = {
+  name: "Eldrun",
+  description: "Fabula Ultima Utilities",
+  options: [],
 };
 
 const url = GUILD_ID
@@ -24,7 +21,7 @@ const main = async () => {
       Authorization: `Bot ${BOT_TOKEN}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify([thorrim]),
+    body: JSON.stringify([eldrun]),
   });
 
   if (!r.ok) throw new Error(`${r.status} ${r.statusText}: ${await r.text()}`);
