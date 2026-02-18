@@ -1,60 +1,14 @@
-import type { Env } from "./env";
-import type { Log } from "./logger";
-import type { Interaction, InteractionResponse } from "./discord/types";
-import { enotheia } from "./commands/enotheia";
+import type { Interaction } from "./discord/types";
+import type { Route } from "./types/routing";
 
-import {
-  beastiarySmall,
-  beastiarySmallModal,
-} from "./commands/beastiary-small";
-
-import {
-  beastiaryMedium,
-  beastiaryMediumModal,
-} from "./commands/beastiary-medium";
-
-import { beastiaryFull, beastiaryFullModal } from "./commands/beastiary-full";
-
-export type Ctx = Readonly<{
-  log: Log;
-  env: Env;
-  waitUntil: (p: Promise<unknown>) => void;
-}>;
-
-export type Cmd = Readonly<{
-  name: string;
-  handle: (i: Interaction, ctx: Ctx) => Promise<InteractionResponse>;
-}>;
-
-export type Handler = (
-  i: Interaction,
-  ctx: Ctx,
-) => Promise<InteractionResponse>;
-
-export type Route =
-  | Readonly<{ kind: "command"; key: string; handle: Handler }>
-  | Readonly<{ kind: "modal"; key: string; handle: Handler }>;
+import { enotheiaCommand, enotheiaModal } from "./commands/enotheia";
+import { itemCommand, itemModal } from "./commands/item";
 
 export const registry = (): readonly Route[] => [
-  { kind: "command", key: "enotheia", handle: enotheia.handle },
-  { kind: "command", key: "beastiary-small", handle: beastiarySmall.handle },
-  { kind: "command", key: "beastiary-medium", handle: beastiaryMedium.handle },
-  { kind: "command", key: "beastiary-full", handle: beastiaryFull.handle },
-  {
-    kind: "modal",
-    key: "beastiary-small-modal",
-    handle: beastiarySmallModal.handle,
-  },
-  {
-    kind: "modal",
-    key: "beastiary-medium-modal",
-    handle: beastiaryMediumModal.handle,
-  },
-  {
-    kind: "modal",
-    key: "beastiary-full-modal",
-    handle: beastiaryFullModal.handle,
-  },
+  enotheiaCommand,
+  enotheiaModal,
+  itemCommand,
+  itemModal,
 ];
 
 export const route = (

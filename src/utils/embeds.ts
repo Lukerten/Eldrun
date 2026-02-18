@@ -1,73 +1,58 @@
 import type { InteractionResponse } from "../discord/types";
-import { parseCalloutHeader } from "./callouts";
-
-export type Embed = Readonly<{
-  title?: string;
-  description?: string;
-  color?: number;
-}>;
+import type { Embed, EmbedInput } from "../types/embeds";
 
 const clamp = (s: string, max: number) =>
   s.length > max ? s.slice(0, max - 1) + "…" : s;
 
-const splitInline = (raw: string): string[] => {
-  const s = raw.trim().replace(/\r\n/g, "\n");
-  const withBreaks = s.replace(/\s+>\s*/g, "\n> ");
-  return withBreaks.split("\n");
-};
+const normalizeNewlines = (s: string) => s.replace(/\r\n/g, "\n").trim();
 
-export const normalizeQuotedText = (raw: string): string => {
-  const lines = splitInline(raw).map((l) => l.replace(/[ \t]+$/g, ""));
-
-  const out: string[] = [];
-  for (const line of lines) {
-    const m = line.match(/^\s*>\s?(.*)$/);
-    if (m) {
-      const content = m[1] ?? "";
-      out.push(content);
-    } else {
-      out.push(line.trim());
-    }
-  }
-
-  while (out.length && out[0].trim() === "") out.shift();
-  while (out.length && out[out.length - 1].trim() === "") out.pop();
-
-  return out.join("\n");
-};
-
-export const normalizeInlineQuotes = normalizeQuotedText;
-export const makeEmbedFromCalloutishText = (
-  name: string,
-  raw: string,
-): Embed => {
-  const normalized = normalizeQuotedText(raw);
-  const lines = normalized
+const stripTrailingWhitespacePerLine = (s: string) =>
+  s
     .split("\n")
     .map((l) => l.replace(/[ \t]+$/g, ""))
-    .filter((l) => l.trim().length > 0);
+    .join("\n");
 
-  const first = lines[0] ?? "";
-  const { style, stripped } = parseCalloutHeader(first);
+const stripQuotePrefixPerLine = (raw: string): string =>
+  raw
+    .split("\n")
+    .map((line) => line.replace(/^\s*>\s?/, ""))
+    .join("\n");
 
-  const descLines = [stripped || first, ...lines.slice(1)].filter(
-    (l) => l.trim().length > 0,
+const maybeStripBlockQuote = (raw: string): string => {
+  const hasAnyQuotedLine = raw
+    .split("\n")
+    .some((l) => /^\s*>\s?/.test(l) && l.trim().length > 0);
+
+  return hasAnyQuotedLine ? stripQuotePrefixPerLine(raw) : raw;
+};
+
+export const makeEmbed = ({ color, icon, text, title }: EmbedInput): Embed => {
+  const cleaned = stripTrailingWhitespacePerLine(
+    maybeStripBlockQuote(normalizeNewlines(text)),
   );
 
-  return {
-    title: clamp(`${style.icon} ${name}`, 256),
-    description: clamp(descLines.join("\n"), 4096),
-    color: style.color,
-  };
+  const titleTrim = title?.trim();
+  if (titleTrim) {
+    const out: { color: number; title: string; description?: string } = {
+      color,
+      title: clamp(`${icon} ${titleTrim}`, 256),
+    };
+
+    if (cleaned.length > 0) out.description = clamp(cleaned, 4096);
+    return out;
+  }
+
+  const desc = cleaned.length > 0 ? `${icon} ${cleaned}` : icon;
+  return { color, description: clamp(desc, 4096) };
 };
 
 export const interactionEmbeds = (
-  embeds: Embed[],
+  embeds: readonly Embed[],
   ephemeral = false,
 ): InteractionResponse => ({
   type: 4,
   data: {
-    embeds,
-    flags: ephemeral ? 64 : undefined,
+    embeds: [...embeds],
+    ...(ephemeral ? { flags: 64 } : {}),
   },
 });

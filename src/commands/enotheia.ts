@@ -1,60 +1,105 @@
-import type { Cmd, Ctx } from "../registry";
-import { message } from "../discord/response";
-import type {
-  Interaction,
-  InteractionDataCommand,
-  InteractionOption,
-} from "../discord/types";
+import type { Interaction, InteractionResponse } from "../discord/types";
+import type { Route } from "../types/routing";
+import { defineCommand } from "../utils/register";
+import { makeEmbed, interactionEmbeds } from "../utils/embeds";
 
-const getStringOption = (i: Interaction, name: string): string | null => {
-  const data = i.data;
-  if (!data || !("options" in data)) return null;
+const CMD = "enotheia";
+const MODAL_ID = "enotheia.modal.v1";
 
-  const opts = (data as InteractionDataCommand).options ?? [];
-  const found = opts.find((o: InteractionOption) => o.name === name);
-  const v = found?.value;
-  return typeof v === "string" ? v : null;
-};
+export const register = defineCommand({
+  name: CMD,
+  description: "Create an Enotheia entry (modal).",
+});
 
-const isQuoted = (s: string): boolean => {
-  const firstNonEmpty = s.split("\n").find((l) => l.trim().length > 0);
-  return firstNonEmpty ? firstNonEmpty.trimStart().startsWith(">") : false;
-};
+const getModalValue = (
+  i: Interaction,
+  customId: string,
+): string | undefined => {
+  // Discord modal submit shape: data.components[].components[] with { custom_id, value }
+  const components = (i as any)?.data?.components;
+  if (!Array.isArray(components)) return undefined;
 
-const quoteify = (s: string): string => {
-  return s
-    .split("\n")
-    .map((line) => (line.trim().length === 0 ? ">" : `> ${line}`))
-    .join("\n");
-};
+  for (const row of components) {
+    const inner = row?.components;
+    if (!Array.isArray(inner)) continue;
 
-export const enotheia: Cmd = {
-  name: "enotheia",
-  handle: async (i, ctx: Ctx) => {
-    const title = (getStringOption(i, "title") ?? "").trim();
-    const textRaw = (getStringOption(i, "text") ?? "").trim();
-
-    if (!title) return message("Missing required option: title", true);
-    if (!textRaw) return message("Missing required option: text", true);
-
-    ctx.log.info(
-      { cmd: "enotheia", titleLen: title.length, textLen: textRaw.length },
-      "interaction",
-    );
-
-    const header = `> Lexika Enotheia • ${title}`;
-
-    const body = isQuoted(textRaw) ? textRaw : quoteify(textRaw);
-
-    const out = `${header}\n${body}`;
-
-    if (out.length > 2000) {
-      return message(
-        `Text too long (${out.length} chars). Discord limit is 2000. Please shorten it or split it.`,
-        true,
-      );
+    for (const c of inner) {
+      if (c?.custom_id === customId && typeof c?.value === "string") {
+        return c.value;
+      }
     }
+  }
 
-    return message(out, false);
+  return undefined;
+};
+
+const openModal = (): InteractionResponse => ({
+  type: 9,
+  data: {
+    custom_id: MODAL_ID,
+    title: "Enotheia",
+    components: [
+      {
+        type: 1,
+        components: [
+          {
+            type: 4,
+            custom_id: "title",
+            label: "Title",
+            style: 1,
+            required: true,
+            max_length: 256,
+            placeholder: "Titel des Artikels",
+          },
+        ],
+      },
+      {
+        type: 1,
+        components: [
+          {
+            type: 4,
+            custom_id: "text",
+            label: "Text",
+            style: 2,
+            required: true,
+            max_length: 4000,
+            placeholder: "> ...",
+          },
+        ],
+      },
+    ],
   },
+});
+
+const handleModalSubmit = (i: Interaction): InteractionResponse => {
+  const title = "Lexika Enotheia • " + getModalValue(i, "title")?.trim();
+  const text = getModalValue(i, "text") ?? "";
+
+  if (!title) {
+    return {
+      type: 4,
+      data: { content: "Missing title.", flags: 64 },
+    };
+  }
+
+  const embed = makeEmbed({
+    color: 0x3498db,
+    icon: "📘",
+    title,
+    text,
+  });
+
+  return interactionEmbeds([embed], false);
+};
+
+export const enotheiaCommand: Route = {
+  kind: "command",
+  key: CMD,
+  handle: async () => openModal(),
+};
+
+export const enotheiaModal: Route = {
+  kind: "modal",
+  key: MODAL_ID,
+  handle: async (i) => handleModalSubmit(i),
 };
