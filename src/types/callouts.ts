@@ -5,6 +5,7 @@ export type CalloutKind =
   | "info"
   | "warning"
   | "danger"
+  | "example"
   | "success";
 
 export type CalloutStyle = Readonly<{

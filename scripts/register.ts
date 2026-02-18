@@ -4,6 +4,7 @@ import { register as enotheia } from "../src/commands/enotheia";
 import { register as item } from "../src/commands/item";
 import { register as quest } from "../src/commands/quest";
 import { register as questEnd } from "../src/commands/quest-end";
+import { register as beastiary } from "../src/commands/beastiary";
 import { defineCommands } from "../src/utils/register";
 
 const APP_ID = process.env.DISCORD_APPLICATION_ID!;
@@ -14,7 +15,7 @@ if (!APP_ID || !BOT_TOKEN) {
   throw new Error("Missing DISCORD_APPLICATION_ID or DISCORD_BOT_TOKEN");
 }
 
-const commands = defineCommands(enotheia, item, quest, questEnd);
+const commands = defineCommands(enotheia, item, quest, questEnd, beastiary);
 
 const url = GUILD_ID
   ? `https://discord.com/api/v10/applications/${APP_ID}/guilds/${GUILD_ID}/commands`

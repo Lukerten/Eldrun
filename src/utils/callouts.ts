@@ -10,6 +10,7 @@ const CALLOUT_STYLES: Record<CalloutKind, CalloutStyle> = {
   success: { icon: "🟢", color: 0x2ecc71 },
   warning: { icon: "⚠️", color: 0xf1c40f },
   danger: { icon: "🔴", color: 0xe74c3c },
+  example: { icon: "💡", color: 0x9b59b6 },
 };
 
 const DEFAULT_STYLE: CalloutStyle = { icon: "📄", color: 0x5865f2 };

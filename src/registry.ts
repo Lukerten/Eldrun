@@ -4,6 +4,7 @@ import type { Route } from "./types/routing";
 import { enotheiaCommand, enotheiaModal } from "./commands/enotheia";
 import { itemCommand, itemModal } from "./commands/item";
 import { questCommand, questModal } from "./commands/quest";
+
 import {
   questEndCommand,
   questEndComponent,
@@ -11,6 +12,14 @@ import {
   questEndModalSuccess,
   questEndModalTimeout,
 } from "./commands/quest-end";
+
+import {
+  beastiaryCommand,
+  beastiaryComponent,
+  beastiaryModalFull,
+  beastiaryModalMedium,
+  beastiaryModalSmall,
+} from "./commands/beastiary";
 
 export const registry = (): readonly Route[] => [
   enotheiaCommand,
@@ -24,6 +33,11 @@ export const registry = (): readonly Route[] => [
   questEndModalCancelled,
   questEndModalSuccess,
   questEndModalTimeout,
+  beastiaryCommand,
+  beastiaryComponent,
+  beastiaryModalSmall,
+  beastiaryModalMedium,
+  beastiaryModalFull,
 ];
 
 export const route = (
