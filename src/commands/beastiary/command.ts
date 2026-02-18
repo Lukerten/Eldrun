@@ -60,7 +60,7 @@ const modalFor = (mode: Mode): InteractionResponse => {
           style: 1, // SHORT
           required: true,
           max_length: 256,
-          placeholder: "Veyron Aerelion",
+          placeholder: "Monster Name",
         },
       ],
     },
