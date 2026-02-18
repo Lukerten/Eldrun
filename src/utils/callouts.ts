@@ -32,7 +32,7 @@ const stripQuotePrefix = (s: string): string =>
 type Header = Readonly<{ kind?: CalloutKind; title?: string }>;
 
 const parseHeader = (line: string): Header => {
-  const m = line.match(/^\[!([a-zA-Z]+)\]\s*(.*)$/);
+  const m = line.match(/^\[!([a-zA-Z]+)\]-?\s*(.*)$/);
   if (!m) return {};
 
   const rawKind = (m[1] ?? "").toLowerCase();

@@ -13,7 +13,7 @@ const stripCalloutHeaderLine = (s: string) => {
   if (lines.length === 0) return s;
 
   const first = (lines[0] ?? "").trim();
-  const isCalloutHeader = /^\[![^\]]+\]/.test(first);
+  const isCalloutHeader = /^\[![^\]]+\]-?/.test(first);
 
   return (isCalloutHeader ? lines.slice(1) : lines).join("\n");
 };

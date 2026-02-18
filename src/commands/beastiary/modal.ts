@@ -59,7 +59,7 @@ const splitCalloutBlocks = (raw: string): readonly string[] => {
   };
 
   for (const line of lines) {
-    const isHeader = /^\s*\[![^\]]+\]/.test(line.trim());
+    const isHeader = /^\s*\[![^\]]+\]-?/.test(line.trim());
     if (isHeader && buf.length > 0) flush();
     buf.push(line);
   }
@@ -107,7 +107,7 @@ const handleModalSubmit = (i: Interaction): InteractionResponse => {
   }
 
   const stats = normalizeItemBlock(statsRaw);
-  let text = stats;
+  let text = "## " + stats;
 
   if (mode === "medium" || mode === "full") {
     const traitsRaw = getModalValue(i, "traits") ?? "";
