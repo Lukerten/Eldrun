@@ -7,13 +7,13 @@ import type {
 const CALLOUT_STYLES: Record<CalloutKind, CalloutStyle> = {
   abstract: { icon: "📄", color: 0x5865f2 },
   info: { icon: "📘", color: 0x3498db },
-  success: { icon: "🟢", color: 0x2ecc71 },
+  success: { icon: "✅", color: 0x2ecc71 },
   warning: { icon: "⚠️", color: 0xf1c40f },
-  danger: { icon: "🔴", color: 0xe74c3c },
+  danger: { icon: "☣️", color: 0xe74c3c },
   example: { icon: "💡", color: 0x9b59b6 },
   note: { icon: "📝", color: 0x95a5a6 },
-  quote: { icon: "❝", color: 0x7f8c8d },
-  tip: { icon: "💡", color: 0x1abc9c },
+  quote: { icon: "❝✅", color: 0x7f8c8d },
+  tip: { icon: "✏️", color: 0x1abc9c },
 };
 
 const DEFAULT_STYLE: CalloutStyle = { icon: "📄", color: 0x5865f2 };
