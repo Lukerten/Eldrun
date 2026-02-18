@@ -1,11 +1,44 @@
+
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "DOM"],
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "strict": true,
+    "resolveJsonModule": true,
+
+    "noEmit": true,
+
+    "rootDir": ".",
+    "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "types": ["@cloudflare/workers-types","node"]
-  }
+
+    "allowJs": false,
+    "checkJs": false,
+
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noPropertyAccessFromIndexSignature": true,
+
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "strictNullChecks": true,
+
+    "useUnknownInCatchVariables": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+
+    "verbatimModuleSyntax": true,
+
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": false,
+    "types": ["@cloudflare/workers-types"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "build", ".wrangler", ".turbo"]
 }
