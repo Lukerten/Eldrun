@@ -28,7 +28,12 @@ export default {
 
     if (interaction.type === 1) return Response.json(pong());
 
-    if (interaction.type !== 2 && interaction.type !== 5) {
+    // Allow: 2 (command), 3 (message component), 5 (modal submit)
+    if (
+      interaction.type !== 2 &&
+      interaction.type !== 3 &&
+      interaction.type !== 5
+    ) {
       return Response.json(message("Unsupported interaction.", true));
     }
 

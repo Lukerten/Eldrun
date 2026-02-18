@@ -1,7 +1,4 @@
-export type InteractionType =
-  | 1 // PING
-  | 2 // APPLICATION_COMMAND
-  | 5; // MODAL_SUBMIT
+export type InteractionType = 1 | 2 | 3 | 5;
 
 export type InteractionOption = {
   name: string;

@@ -4,6 +4,13 @@ import type { Route } from "./types/routing";
 import { enotheiaCommand, enotheiaModal } from "./commands/enotheia";
 import { itemCommand, itemModal } from "./commands/item";
 import { questCommand, questModal } from "./commands/quest";
+import {
+  questEndCommand,
+  questEndComponent,
+  questEndModalCancelled,
+  questEndModalSuccess,
+  questEndModalTimeout,
+} from "./commands/quest-end";
 
 export const registry = (): readonly Route[] => [
   enotheiaCommand,
@@ -12,6 +19,11 @@ export const registry = (): readonly Route[] => [
   itemModal,
   questCommand,
   questModal,
+  questEndCommand,
+  questEndComponent,
+  questEndModalCancelled,
+  questEndModalSuccess,
+  questEndModalTimeout,
 ];
 
 export const route = (
@@ -22,6 +34,13 @@ export const route = (
     const name = (i.data as any)?.name;
     return typeof name === "string"
       ? routes.find((r) => r.kind === "command" && r.key === name)
+      : undefined;
+  }
+
+  if (i.type === 3) {
+    const id = (i.data as any)?.custom_id;
+    return typeof id === "string"
+      ? routes.find((r) => r.kind === "component" && r.key === id)
       : undefined;
   }
 
