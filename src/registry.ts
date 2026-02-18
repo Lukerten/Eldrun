@@ -3,12 +3,15 @@ import type { Route } from "./types/routing";
 
 import { enotheiaCommand, enotheiaModal } from "./commands/enotheia";
 import { itemCommand, itemModal } from "./commands/item";
+import { questCommand, questModal } from "./commands/quest";
 
 export const registry = (): readonly Route[] => [
   enotheiaCommand,
   enotheiaModal,
   itemCommand,
   itemModal,
+  questCommand,
+  questModal,
 ];
 
 export const route = (
