@@ -28,7 +28,6 @@ export default {
 
     if (interaction.type === 1) return Response.json(pong());
 
-    // Allow: 2 (command), 3 (message component), 5 (modal submit)
     if (
       interaction.type !== 2 &&
       interaction.type !== 3 &&

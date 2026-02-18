@@ -18,6 +18,20 @@ const stripCalloutHeaderLine = (s: string) => {
   return (isCalloutHeader ? lines.slice(1) : lines).join("\n");
 };
 
+const stripMarkdownWrappers = (line: string): string => {
+  let s = line.trim();
+  for (let i = 0; i < 3; i++) {
+    s = s
+      .replace(/^\*\*(.*)\*\*$/s, "$1")
+      .replace(/^__(.*)__$/s, "$1")
+      .replace(/^\*(.*)\*$/s, "$1")
+      .replace(/^_(.*)_$/s, "$1")
+      .trim();
+  }
+
+  return s;
+};
+
 export const ELEMENT_ICON: Readonly<Record<Element, string>> = {
   Physical: "🗡️",
   Fire: "🔥",
@@ -38,7 +52,6 @@ export const AFFINITY_ICON: Readonly<Record<Affinity, string>> = {
 };
 
 export const formatElement = (e: Element) => `${ELEMENT_ICON[e]} ${e}`;
-
 export const formatAffinity = (a: Affinity) => `${AFFINITY_ICON[a]} ${a}`;
 
 const parseElement = (raw: string): Element | undefined => {
@@ -82,10 +95,13 @@ export const parseAffinityBlock = (raw: string): readonly AffinityEntry[] => {
   const seen = new Set<string>();
 
   for (const line of lines) {
-    const t = line.trim();
+    const t0 = line.trim();
+    if (!t0) continue;
+
+    const t = stripMarkdownWrappers(t0).replace(/:$/, "").trim();
     if (!t) continue;
 
-    const maybeHeading = parseAffinity(t.replace(/:$/, ""));
+    const maybeHeading = parseAffinity(t);
     if (maybeHeading) {
       current = maybeHeading;
       continue;
@@ -93,7 +109,7 @@ export const parseAffinityBlock = (raw: string): readonly AffinityEntry[] => {
 
     const bullet = t.match(/^-\s+(.*)$/);
     if (bullet && current) {
-      const elementRaw = (bullet[1] ?? "").trim();
+      const elementRaw = stripMarkdownWrappers((bullet[1] ?? "").trim());
       const el = parseElement(elementRaw);
       if (!el) continue;
 
@@ -110,7 +126,6 @@ export const parseAffinityBlock = (raw: string): readonly AffinityEntry[] => {
 
 export const affinitiesToList = (entries: readonly AffinityEntry[]): string => {
   if (entries.length === 0) return "—";
-
   return entries
     .map((e) => `- ${formatAffinity(e.affinity)}: ${formatElement(e.element)}`)
     .join("\n");

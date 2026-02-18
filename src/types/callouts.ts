@@ -1,11 +1,12 @@
-// src/types/callouts.ts
-
 export type CalloutKind =
   | "abstract"
   | "info"
   | "warning"
   | "danger"
   | "example"
+  | "note"
+  | "quote"
+  | "tip"
   | "success";
 
 export type CalloutStyle = Readonly<{
