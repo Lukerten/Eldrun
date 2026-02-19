@@ -38,10 +38,10 @@ export const ELEMENT_ICON: Readonly<Record<Element, string>> = {
   Air: "🌪️",
   Bolt: "⚡",
   Ice: "❄️",
-  Earth: "🗿",
-  Light: "💡",
-  Dark: "💀",
-  Poison: "🍶",
+  Earth: "⛰️",
+  Light: "☀️",
+  Dark: "🌑",
+  Poison: "☠️",
 };
 
 export const AFFINITY_ICON: Readonly<Record<Affinity, string>> = {

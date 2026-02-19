@@ -25,7 +25,7 @@ const stripQuotePrefix = (s: string): string =>
     .split("\n")
     .map((line) => {
       const m = line.match(/^\s*>\s?(.*)$/);
-      return m ? m[1] ?? "" : line;
+      return m ? (m[1] ?? "") : line;
     })
     .join("\n");
 
